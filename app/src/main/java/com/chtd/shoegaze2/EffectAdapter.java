@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -36,12 +35,14 @@ public class EffectAdapter extends RecyclerView.Adapter<EffectAdapter.ViewHolder
     public void onBindViewHolder(EffectAdapter.ViewHolder holder, int position) {
         Effect effect = effects.get(position);
         holder.effectName.setText(effect.getName());
-        holder.bypassSwitch.setChecked(!effect.isBypass());
+        holder.bypassSwitch.setChecked(effect.isBypass());
         //holder.nameView.setText(state.getName());
         holder.controlsLayout.removeAllViews();
 
 
         List<EffectControl> effectControls = effect.getControls();
+
+
 
         for (EffectControl e:
              effectControls) {
@@ -50,9 +51,34 @@ public class EffectAdapter extends RecyclerView.Adapter<EffectAdapter.ViewHolder
             ConstraintLayout wrapper = view.findViewById(R.id.effectControlLayout);
             TextView name = wrapper.findViewById(R.id.effectControlName);
             SeekBar seek = wrapper.findViewById(R.id.effectControlSeekBar);
+            TextView SeekProgress = wrapper.findViewById(R.id.effectControlProgress);
+            TextView bypassSwitch = wrapper.findViewById(R.id.effectBypassSwitch);
+
 
             name.setText(e.getName());
             seek.setProgress(e.getValue());
+            SeekProgress.setText(Integer.toString(seek.getProgress()));
+
+
+
+            seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seek, int progress, boolean fromUser) {
+                    SeekProgress.setText(Integer.toString(progress));
+
+                }
+
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
         }
     }
 

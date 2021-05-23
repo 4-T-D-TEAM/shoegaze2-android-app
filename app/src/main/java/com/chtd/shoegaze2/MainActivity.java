@@ -28,21 +28,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             addEffect(i);
-        }
+        }*/
+        addEffect(1, "Distorion", "Gain", "Volume");
+        addEffect(2, "Delay", "Depth", "Pitch");
+        addEffect(3, "Chorus", "Depth", "Delay");
+        addEffect(4, "Overdrive", "Gain", "Volume");
         recyclerView = findViewById(R.id.recyclerView);
 
         EffectAdapter adapter = new EffectAdapter(this, effectList);
         recyclerView.setAdapter(adapter);
     }
 
-    protected void addEffect(int index) {
+    protected void addEffect(int index, String effectName, String seek1Name, String seek2Name) {
         ArrayList<EffectControl> effectControls = new ArrayList<>();
-        effectControls.add(new EffectControl("Gain " + Integer.toString(index), 50));
-        effectControls.add(new EffectControl("Volume " + Integer.toString(index), 100));
-
-        effectList.add(new Effect("Distortion " + Integer.toString(index), index % 2 == 0, effectControls));
+        effectControls.add(new EffectControl(seek1Name, 50));
+        effectControls.add(new EffectControl(seek2Name, 100));
+        effectList.add(new Effect(Integer.toString(index)+"."+effectName, index % 2 == 0, effectControls));
     }
 
 }
