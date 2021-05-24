@@ -11,6 +11,9 @@ import android.widget.Adapter;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.chtd.shoegaze2.bluetooth.Shoegaze2BluetoothDevice;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,14 +23,19 @@ import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
     protected RecyclerView recyclerView;
-
     ArrayList<Effect> effectList = new ArrayList<Effect>();
+
+    public static Shoegaze2BluetoothDevice bt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bt = new Shoegaze2BluetoothDevice();
+        boolean success = bt.initBluetooth();
 
+        if (success)
+            Toast.makeText(this, "Successfully Connected!", Toast.LENGTH_LONG).show();
         /*for (int i = 0; i < 10; i++) {
             addEffect(i);
         }*/

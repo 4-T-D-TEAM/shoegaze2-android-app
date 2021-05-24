@@ -1,5 +1,6 @@
 package com.chtd.shoegaze2;
 
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chtd.shoegaze2.bluetooth.Shoegaze2BluetoothDevice;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 public class EffectAdapter extends RecyclerView.Adapter<EffectAdapter.ViewHolder> {
@@ -36,13 +43,9 @@ public class EffectAdapter extends RecyclerView.Adapter<EffectAdapter.ViewHolder
         Effect effect = effects.get(position);
         holder.effectName.setText(effect.getName());
         holder.bypassSwitch.setChecked(effect.isBypass());
-        //holder.nameView.setText(state.getName());
         holder.controlsLayout.removeAllViews();
 
-
         List<EffectControl> effectControls = effect.getControls();
-
-
 
         for (EffectControl e:
              effectControls) {
@@ -52,20 +55,18 @@ public class EffectAdapter extends RecyclerView.Adapter<EffectAdapter.ViewHolder
             TextView name = wrapper.findViewById(R.id.effectControlName);
             SeekBar seek = wrapper.findViewById(R.id.effectControlSeekBar);
             TextView SeekProgress = wrapper.findViewById(R.id.effectControlProgress);
-            TextView bypassSwitch = wrapper.findViewById(R.id.effectBypassSwitch);
-
+            Switch bypassSwitch = wrapper.findViewById(R.id.effectBypassSwitch);
 
             name.setText(e.getName());
             seek.setProgress(e.getValue());
             SeekProgress.setText(Integer.toString(seek.getProgress()));
 
-
-
             seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seek, int progress, boolean fromUser) {
                     SeekProgress.setText(Integer.toString(progress));
-
+                    e.setValue(progress);
+                    MainActivity.bt.write(e.getName() + ":" + Integer.toString(progress));
                 }
 
 
@@ -99,4 +100,9 @@ public class EffectAdapter extends RecyclerView.Adapter<EffectAdapter.ViewHolder
             controlsLayout = (LinearLayout)view.findViewById(R.id.effectControlsLayout);
         }
     }
+
+
+
 }
+
+
