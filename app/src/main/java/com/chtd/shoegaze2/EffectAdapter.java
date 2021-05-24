@@ -61,12 +61,11 @@ public class EffectAdapter extends RecyclerView.Adapter<EffectAdapter.ViewHolder
             name.setText(e.getName());
             seek.setProgress(e.getValue());
             SeekProgress.setText(Integer.toString(seek.getProgress()));
-            bypassSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
+            /*bypassSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     MainActivity.bt.write(e.getName() + ":" + isChecked);
                 }
-            });
+            });*/
             seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seek, int progress, boolean fromUser) {
